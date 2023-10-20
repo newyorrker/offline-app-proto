@@ -8,4 +8,5 @@ const sessionFromNative = (data: unknown) => {
   console.log(data, "from session from native");
 }
 
+//@ts-ignore
 window.sessionFromNative = sessionFromNative;
