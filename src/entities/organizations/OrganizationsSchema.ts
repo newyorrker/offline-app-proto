@@ -1,0 +1,1 @@
+export const ORGANIZATIONS_SCHEMA = import.meta.env.VITE_ORGANIZATIONS_SCHEMA || "Organizations";

@@ -1,0 +1,1 @@
+export const WORKSHOPS_SCHEMA = import.meta.env.VITE_WORKSHOPS_SCHEMA || "Workshops";

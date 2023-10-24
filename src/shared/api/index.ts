@@ -1,0 +1,1 @@
+export { ObjectRepository } from "./repositories/ObjectRepository";

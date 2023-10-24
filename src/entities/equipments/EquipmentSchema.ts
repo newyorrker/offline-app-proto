@@ -1,0 +1,1 @@
+export const EQUIPMENTS_SCHEMA = import.meta.env.VITE_EQUIPMENTS_SCHEMA || "Equipments";
