@@ -23,7 +23,7 @@
 import VueIcon from '../assets/vue.svg';
 import ViteICon from "../assets/vite.svg";
 import { Controller } from '@src/features/app-controller';
-import { DataGeneration } from '@src/features/data-generation';
+// import { DataGeneration } from '@src/features/data-generation';
 
 /**
  * 1. Проверка наличия данных

@@ -54,7 +54,7 @@ export class DataGenerationService {
       const organizations = await this.createOrganizations();
 
       const workshops = await this.createWorkshops(organizations);
-      const equipment = this.createEquipments(workshops);
+      this.createEquipments(workshops);
 
 
 

@@ -23,7 +23,7 @@ export class ObjectRepository {
     schema: string,
     query: Record<string, any> = {take: 0}
   ) {
-    return await this.client.post(`/objects/${schema}/query`, query, {params: { count: true}}).then(({headers, data}) => {
+    return await this.client.post(`/objects/${schema}/query`, query, {params: { count: true}}).then(({headers}) => {
 
       return parseInt(headers['x-appercode-totalitems'] || 0)
     });
