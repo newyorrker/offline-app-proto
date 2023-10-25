@@ -66,13 +66,14 @@ export class GeneratedData {
     const equipmentsSource = [];
 
     for (const workshop of workshops) {
+
+      //кол-во оборудования на каждый цех
       for (let i = 0; i < 1000; i++) {
 
         const inventoryNumber = generateInventoryNumber(i);
         const nfcTagCode = generateNfcTagCode();
         const title = `Equipment-${generateTitlePayload()}-${i}`;
         const workshopId = workshop.id;
-
 
         //shoud 16000bit long
 

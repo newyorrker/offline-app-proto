@@ -3,7 +3,7 @@
     Загрузка...
     <div>
       <p v-if="progress.count">
-        Цехов загруженно: {{ progress.count }}
+        Оборудования загруженно: {{ progress.count }}
       </p>
     </div>
     <progress v-if="progress.total" id="file" :value="progress.count" :max="progress.total" />

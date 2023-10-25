@@ -1,10 +1,10 @@
 <template>
-  <div class="logos">
+  <!-- <div class="logos">
     <a v-html="ViteICon" href="https://vitejs.dev" target="_blank">
     </a>
     <a v-html="VueIcon" href="https://vuejs.org/" target="_blank">
     </a>
-  </div>
+  </div> -->
 
   <br>
 
@@ -18,8 +18,8 @@
 
 <script setup lang="ts">
 
-import VueIcon from '../assets/vue.svg';
-import ViteICon from "../assets/vite.svg";
+// import VueIcon from '../assets/vue.svg';
+// import ViteICon from "../assets/vite.svg";
 import { Controller } from '@src/features/app-controller';
 
 /**

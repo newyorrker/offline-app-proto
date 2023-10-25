@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 
-import { onMounted, ref, defineEmits } from 'vue';
+import { onMounted, ref } from 'vue';
 import { DataGenerationService } from '../services/DataGenerationService';
 import { ObjectRepository } from "../../../shared/api";
 import { sleep } from '@src/shared/lib/common';
