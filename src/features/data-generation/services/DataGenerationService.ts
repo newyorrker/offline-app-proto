@@ -5,15 +5,6 @@ import { ORGANIZATIONS_SCHEMA } from "@src/entities/organizations";
 import { WORKSHOPS_SCHEMA, WorkshopDto } from "@src/entities/workshops";
 import { EQUIPMENTS_SCHEMA } from "@src/entities/equipments";
 
-
-function sleep(ms: number): Promise<void> {
-  return new Promise(resolve => {
-    setTimeout(resolve, ms);
-  });
-}
-
-
-
 const collections: string[] = [
   ORGANIZATIONS_SCHEMA,
   WORKSHOPS_SCHEMA,
@@ -54,13 +45,7 @@ export class DataGenerationService {
       const organizations = await this.createOrganizations();
 
       const workshops = await this.createWorkshops(organizations);
-      this.createEquipments(workshops);
-
-
-
-
-
-
+      await this.createEquipments(workshops);
     }
     catch(e) {
       console.error(e);
@@ -113,21 +98,17 @@ export class DataGenerationService {
 
       const data = this.generatedData.getEquipments(workshopBatch);
 
-      const dataList = splitList(data, 900);
+      const dataList = splitList(data, 100);
 
+      const promises = dataList.map((dataItem) => {
+        return this.objectRepository.createBatch(dataItem, EQUIPMENTS_SCHEMA).then((data) => {
+          progress+= JSON.stringify(dataItem).length;
+          this.conutProgress(progress);
+          return data
+        });
+      });
 
-      for (const dataItem of dataList) {
-        progress+= JSON.stringify(dataItem).length;
-        this.conutProgress(progress);
-        try {
-          await this.objectRepository.createBatch(dataItem, EQUIPMENTS_SCHEMA);
-        }
-        catch(e) {
-          console.error(e);
-          await sleep(5000);
-        }
-
-      }
+      await Promise.all(promises);
     }
   }
 

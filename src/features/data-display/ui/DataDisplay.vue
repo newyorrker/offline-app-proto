@@ -1,50 +1,56 @@
 <template>
   <div class="data-display">
 
-    <div class="select-content">
-      <p>
-        <label for="">
-          <span>Организация</span>
-          <br>
-          <select v-model="selectedOrganizationId" name="organizations" id="organizations">
-            <option v-for="organization in data.value.organizations" :value="organization.id">{{ organization.title }}</option>
-          </select>
-        </label>
+    <template v-if="data.value.organizations?.length">
 
-      </p>
-      <p>
-        <label>
-          <span>Цех</span>
-          <br>
-          <select v-model="selectedWorkshopId" name="workshops" id="workshops">
-            <option v-for="workshop in filteredWorkshops" :value="workshop.id">{{ workshop.title }}</option>
-          </select>
-        </label>
-      </p>
-    </div>
-
-    <!-- <pre>{{ data.value.equipments }}</pre> -->
-
-
-    <div class="table-content">
-      <div class="table-content-container">
-        <table>
-          <thead>
-            <th>Название</th>
-            <th>Инвентарный номер</th>
-            <th>Код NFC-метки</th>
-          </thead>
-          <tbody>
-            <tr v-for="equipment in filteredEquipments">
-              <td>{{ equipment.title.slice(0, Math.ceil(Math.random()*35)) }}</td>
-              <td>{{ equipment.inventoryNumber.slice(0, Math.ceil(Math.random()*40)) }}</td>
-              <td>{{ equipment.nfcTagCode.slice(0, Math.ceil(Math.random()*15)) }}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="select-content">
+        <p>
+          <label>
+            <span>Организация</span>
+            <br>
+            <select v-model="selectedOrganizationId" name="organizations" id="organizations">
+              <option v-for="organization in data.value.organizations" :value="organization.id">{{ organization.title }}</option>
+            </select>
+          </label>
+        </p>
+        <p>
+          <label>
+            <span>Цех</span>
+            <br>
+            <select v-model="selectedWorkshopId" name="workshops" id="workshops">
+              <option v-for="workshop in filteredWorkshops" :value="workshop.id">{{ workshop.title }}</option>
+            </select>
+          </label>
+        </p>
+        <p>
+          <button @click="$emit('clear')">Очистить данные</button>
+        </p>
       </div>
-
+      <!-- <pre>{{ data.value.equipments }}</pre> -->
+      <div class="table-content">
+        <div class="table-content-container">
+          <table>
+            <thead>
+              <th>Название</th>
+              <th>Инвентарный номер</th>
+              <th>Код NFC-метки</th>
+            </thead>
+            <tbody>
+              <tr v-for="equipment in filteredEquipments">
+                <td>{{ equipment.title.slice(0, Math.ceil(Math.random()*35)) }}</td>
+                <td>{{ equipment.inventoryNumber.slice(0, Math.ceil(Math.random()*40)) }}</td>
+                <td>{{ equipment.nfcTagCode.slice(0, Math.ceil(Math.random()*15)) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </template>
+    <div v-else>
+      Данные отсутствуют
     </div>
+
+
   </div>
 </template>
 
@@ -82,19 +88,23 @@ watch(selectedOrganizationId, () => {
     display: grid;
     grid-template-rows: auto minmax(0, 1fr);
     width: 100%;
-    height: calc(100% - 70px);
+    height: calc(100% - 170px);
   }
   .select-content {
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     text-align: left;
+    gap: 16px;
+    margin-bottom: 32px;
 
     select {
       min-width: 150px;
       font-size: 14px;
     }
 
-    p + p {
-      margin-left: 32px;
+    p {
+      margin: 0;
     }
   }
 
@@ -106,7 +116,7 @@ watch(selectedOrganizationId, () => {
 
   .table-content {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr);
     width: 100%;
     height: 100%;

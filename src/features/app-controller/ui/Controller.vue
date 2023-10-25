@@ -1,32 +1,36 @@
 <template>
+  <DataGeneration @generated="start" />
   <DataLoading v-if="isLoadingData" :progress="loadingProgress" />
-  <DataDisplay v-if="!isLoadingData" :data="loadedData" />
+  <DataDisplay v-if="!isLoadingData" @clear="clearData" :data="loadedData" />
 </template>
 
 <script setup lang="ts">
 
 import { DataLoadService, DataLoading } from "@src/features/data-loading";
 import { DatabaseService } from "../services/DatabaseService";
+import { DataGeneration } from '@src/features/data-generation';
 import { DataDisplay } from "@src/features/data-display";
 import { onMounted, reactive, ref } from "vue";
 import { ObjectRepository } from "@src/shared/api";
 import { AppData } from "..";
 
-
 const isLoadingData = ref(true);
 const loadingProgress = reactive({ text: "", count: 0, total: 0 });
 const loadedData = reactive<{value: AppData}>({value: {}});
 
-onMounted(async () => {
+const dbService = new DatabaseService();
 
-  const dbService = new DatabaseService();
-  const dbExist = ref(await dbService.hasTables());
+const clearData = () => {
+  dbService.deleteDb();
+  window.location.reload();
+}
+
+const start = async () => {
+  const storeIsEmpty = await dbService.storeIsEmpty();
 
   isLoadingData.value = true;
 
-  console.log(dbExist.value);
-
-  if(!dbExist.value) {
+  if(storeIsEmpty) {
     const objectRepository = new ObjectRepository();
     const dataLoadService = new DataLoadService(objectRepository);
 
@@ -58,6 +62,12 @@ onMounted(async () => {
   }
 
   isLoadingData.value = false;
+}
+
+onMounted(async () => {
+
+  start();
+
 })
 
 </script>

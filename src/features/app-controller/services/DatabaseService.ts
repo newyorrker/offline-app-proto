@@ -17,7 +17,7 @@ const storeNames = [
 ];
 
 export class DatabaseService {
-  hasTables() {
+  storeIsEmpty() {
     const request = indexedDB.open(DB_NAME, DB_VERSION_1);
 
     return new Promise((resolve, reject) => {
@@ -25,29 +25,38 @@ export class DatabaseService {
       request.onupgradeneeded = () => {
         const db = request.result;
 
-        let res = true;
-
         for (const tableName of storeNames) {
-
           if (!db.objectStoreNames.contains(tableName)) {
-
             db.createObjectStore(tableName, { keyPath: 'id' });
+          }
+        }
+      }
 
-            res = false;
+      request.onsuccess = async () => {
+        const db = request.result;
+
+        const transaction = db.transaction(storeNames, "readonly");
+
+        let storeIsEmpty = false;
+
+        for (const storeName of storeNames) {
+          const objectStore = transaction.objectStore(storeName);
+          const countRequest = objectStore.count();
+          const countPromise = new Promise((resolve) => {
+            countRequest.onsuccess = () => {
+              resolve(countRequest.result);
+            }
+          });
+
+          const res = await countPromise;
+
+          if(!res) {
+            storeIsEmpty = true;
+            break;
           }
         }
 
-        resolve(res);
-      }
-
-      request.onsuccess = () => {
-        const db = request.result;
-
-        const everyExist = storeNames.every((tableName) => {
-          return db.objectStoreNames.contains(tableName)
-        })
-
-        resolve(everyExist);
+        resolve(storeIsEmpty);
       }
 
       request.onerror = (event) => {
